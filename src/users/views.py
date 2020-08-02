@@ -14,7 +14,7 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(
                 request, f'successfully created account for {username}')
-            return redirect('page:home')
+            return redirect('login')
     else:
         form = forms.ExtendedUserCreationForm()
     return render(request, 'page/register.html', {'form': form})
