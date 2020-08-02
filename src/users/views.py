@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import views
+
 from . import forms
 
 
@@ -18,3 +20,16 @@ def register(request):
     else:
         form = forms.ExtendedUserCreationForm()
     return render(request, 'page/register.html', {'form': form})
+
+
+
+
+
+
+
+# class Login(views.LoginView):
+#     template_name = 'page/login.html'
+
+
+# class Logout(views.LogoutView):
+#     template_name = 'page/logout.html'

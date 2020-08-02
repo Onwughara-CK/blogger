@@ -26,7 +26,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('page.urls')),
     path('register/', views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='page/login.html'), name='login')
+    # path('login/', views.Login.as_view(), name='login'),
+    # path('logout/', views.Logout.as_view(), name='logout')
+
+    path('login/', auth_views.LoginView.as_view(template_name='page/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='page/logout.html'), name='logout')
 ]
 
 # if settings.DEBUG:
