@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import views
+from django.contrib.auth.decorators import login_required
 
-from . import forms
+from . import forms, models
 
 
 def register(request):
@@ -22,14 +23,33 @@ def register(request):
     return render(request, 'page/register.html', {'form': form})
 
 
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form_profile = forms.UpdateProfileForm(
+            request.POST,
+            instance=request.user
+        )
+        form_picture = forms.UpdatePictureForm(
+            request.POST,
+            request.FILES,
+            instance=request.user
+        )
+        if form_profile.is_valid() and form_picture.is_valid():
+            form_picture.save()
+            form_profile.save()
+            messages.success(
+                request,
+                f'You have successfully updated your account'
+            )
+            return redirect('profile')
+    else:
+        form_picture = forms.UpdatePictureForm()
+        form_profile = forms.UpdateProfileForm()
 
+        context = {
+            "form_pic": form_picture,
+            "form_pro": form_profile
+        }
 
-
-
-
-# class Login(views.LoginView):
-#     template_name = 'page/login.html'
-
-
-# class Logout(views.LogoutView):
-#     template_name = 'page/logout.html'
+    return render(request, 'page/profile.html', context)
