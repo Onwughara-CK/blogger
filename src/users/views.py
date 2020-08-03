@@ -33,7 +33,7 @@ def profile(request):
         form_picture = forms.UpdatePictureForm(
             request.POST,
             request.FILES,
-            instance=request.user
+            instance=request.user.profile
         )
         if form_profile.is_valid() and form_picture.is_valid():
             form_picture.save()
@@ -44,8 +44,8 @@ def profile(request):
             )
             return redirect('profile')
     else:
-        form_picture = forms.UpdatePictureForm()
-        form_profile = forms.UpdateProfileForm()
+        form_picture = forms.UpdatePictureForm(instance=request.user.profile)
+        form_profile = forms.UpdateProfileForm(instance=request.user)
 
         context = {
             "form_pic": form_picture,
