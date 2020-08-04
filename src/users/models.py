@@ -21,4 +21,4 @@ class Profile(models.Model):
         image = Image.open(image_path)
         MAX_SIZE = (125, 125)
         image.thumbnail(MAX_SIZE)
-        image.save()
+        image.save(image_path)
