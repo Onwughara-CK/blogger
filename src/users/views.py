@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import views
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from . import forms, models
+from page.models import Post
 
 
 def register(request):
@@ -24,7 +26,7 @@ def register(request):
 
 
 @login_required
-def profile(request):
+def profile(request, author_id):
     if request.method == 'POST':
         form_profile = forms.UpdateProfileForm(
             request.POST,
@@ -44,8 +46,10 @@ def profile(request):
             )
             return redirect('profile')
     else:
-        form_picture = forms.UpdatePictureForm(instance=request.user.profile)
-        form_profile = forms.UpdateProfileForm(instance=request.user)
+        user = User.objects.get(id=author_id)
+        form_picture = forms.UpdatePictureForm(
+            instance=user.profile)
+        form_profile = forms.UpdateProfileForm(instance=user)
 
         context = {
             "form_pic": form_picture,
