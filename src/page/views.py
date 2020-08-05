@@ -37,7 +37,7 @@ class PostUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
         user = request.user
-        post = self.object()
+        post = self.get_object()
         if post.author != user:
             raise PermissionDenied
         return handler
