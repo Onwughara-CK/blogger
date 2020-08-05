@@ -26,7 +26,7 @@ def register(request):
 
 
 @login_required
-def profile(request, author_id):
+def profile(request, username):
     if request.method == 'POST':
         form_profile = forms.UpdateProfileForm(
             request.POST,
@@ -46,14 +46,21 @@ def profile(request, author_id):
             )
             return redirect('profile')
     else:
-        user = User.objects.get(id=author_id)
-        form_picture = forms.UpdatePictureForm(
-            instance=user.profile)
-        form_profile = forms.UpdateProfileForm(instance=user)
-
+        user = User.objects.get(username=username)
         context = {
-            "form_pic": form_picture,
-            "form_pro": form_profile
+            'profile_owner': user
         }
+        if request.user == user:
+            form_picture = forms.UpdatePictureForm(
+                instance=user.profile)
+            form_profile = forms.UpdateProfileForm(instance=user)
+
+            context.update({
+                "form_pic": form_picture,
+                "form_pro": form_profile
+            })
 
     return render(request, 'page/profile.html', context)
+
+
+

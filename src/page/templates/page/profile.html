@@ -1,12 +1,15 @@
 {% extends "page/base.html" %}
 {% block content %}
-<h1>Profile of {{ form_pro.instance.username }}</h1>
+<h1>Profile of {{ profile_owner.username }}</h1>
+<p>Email :{{ profile_owner.email }}</p>
+<p><a href="{% url 'page:user-posts' profile_owner.username %} ">View all {{ profile_owner.username }}'s Post </a></p>
 
+{% if form_pro %}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form_pic.as_ul }}
     {{ form_pro.as_ul }}
     <button type="submit">Update</button>
 </form>
-
+{% endif %}
 {% endblock content %}

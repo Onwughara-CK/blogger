@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class Post(models.Model):
     """
-    Use to create Post model
+    Model that represents post data
     """
 
     title = models.CharField(max_length=50)
