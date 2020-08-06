@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Post(models.Model):
@@ -13,9 +14,14 @@ class Post(models.Model):
     content = models.TextField('content')
     date_posted = models.DateTimeField('time published', default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=75, unique=True)
 
     def get_absolute_url(self):
-        return reverse('page:detail', args=[self.pk])
+        return reverse('page:detail', args=[self.pk, self.slug])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

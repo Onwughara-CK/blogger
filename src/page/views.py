@@ -13,6 +13,7 @@ class HomeView(generic.ListView):
     template_name = "page/home.html"
     ordering = ['-date_posted']
     context_object_name = 'posts'
+    paginate_by = 5
 
 
 class PostDetailView(generic.DetailView):
@@ -64,9 +65,10 @@ class UserPostListView(generic.ListView):
 
     template_name = "page/owner_post_list.html"
     context_object_name = 'posts'
+    paginate_by = 5
 
     def get_queryset(self):
-        return User.objects.filter(username=self.kwargs['username']).first().post_set.all()
+        return User.objects.filter(username=self.kwargs['username']).first().post_set.all().order_by('-date_posted')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
