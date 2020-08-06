@@ -1,5 +1,9 @@
 {% extends 'page/base.html' %}
 {% block content %}
-<p>sorry to see you go!!!!</p>
-<small> <a href="{% url 'login' %}">login again</a></small>
-{% endblock %}
+<h2>Sorry to See You go! </h2>
+<div class="pt-1">
+    <small class="text-muted">
+        <a href="{% url 'login' %}">Log in Again</a>
+    </small>
+</div>
+{% endblock content %}

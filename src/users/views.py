@@ -40,11 +40,12 @@ def profile(request, username):
         if form_profile.is_valid() and form_picture.is_valid():
             form_picture.save()
             form_profile.save()
+            username = request.user.username
             messages.success(
                 request,
                 f'You have successfully updated your account'
             )
-            return redirect('profile')
+        return redirect('profile', username=username)
     else:
         user = User.objects.get(username=username)
         context = {
@@ -61,6 +62,3 @@ def profile(request, username):
             })
 
     return render(request, 'page/profile.html', context)
-
-
-
