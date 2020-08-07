@@ -1,9 +1,9 @@
-from page.models import Post
-
+from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions
 
 from . import serializers
 from . import permissions as api_perm
+from page.models import Post
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -24,10 +24,10 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class UserViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to view or edit posts.
+    API endpoint that allows users to be viewed or edited.
     """
 
-    queryset = Post.objects.all()
+    queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,

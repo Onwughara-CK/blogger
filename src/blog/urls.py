@@ -26,7 +26,8 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-router.register('post', api_views.PostViewSet)
+router.register('posts', api_views.PostViewSet)
+router.register('users', api_views.UserViewSet)
 
 
 urlpatterns = [

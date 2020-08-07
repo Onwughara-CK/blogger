@@ -13,7 +13,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField('content')
     date_posted = models.DateTimeField('time published', default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User, related_name='posts', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=75)
 
     def get_absolute_url(self):

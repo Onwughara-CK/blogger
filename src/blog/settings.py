@@ -142,7 +142,3 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-# AUTHENTICATION_BACKENDS = {
-#     'django.contrib.auth.backends.ModelBackend',
-#     'guardian.backends.ObjectPermissionBackend'
-# }
