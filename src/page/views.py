@@ -1,5 +1,6 @@
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.base import RedirectView
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +21,16 @@ class PostDetailView(generic.DetailView):
     model = models.Post
     template_name = "page/post_detail.html"
     context_object_name = 'post'
+
+
+class PostRedirectDetailView(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'page:detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        post = get_object_or_404(models.Post, pk=kwargs['pk'])
+        return post.get_absolute_url()
 
 
 class PostCreateView(LoginRequiredMixin, generic.edit.CreateView):

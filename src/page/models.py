@@ -14,7 +14,7 @@ class Post(models.Model):
     content = models.TextField('content')
     date_posted = models.DateTimeField('time published', default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=75, unique=True)
+    slug = models.SlugField(max_length=75)
 
     def get_absolute_url(self):
         return reverse('page:detail', args=[self.pk, self.slug])

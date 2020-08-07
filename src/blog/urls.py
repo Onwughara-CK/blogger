@@ -20,6 +20,13 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 from users import views as users_view
+from api import views as api_views
+
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+
+router.register('post', api_views.PostViewSet)
 
 
 urlpatterns = [
@@ -31,6 +38,12 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='page/logout.html'), name='logout'),
 
     path('profile/<str:username>', users_view.profile, name='profile'),
+
+    # API
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
+
 
 
 

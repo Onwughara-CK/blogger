@@ -32,7 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = ['users.apps.UsersConfig',
                   'page',
+                  'rest_framework',
                   'crispy_forms',
+
                   'django.contrib.admin',
                   'django.contrib.auth',
                   'django.contrib.contenttypes',
@@ -133,3 +135,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+
+# AUTHENTICATION_BACKENDS = {
+#     'django.contrib.auth.backends.ModelBackend',
+#     'guardian.backends.ObjectPermissionBackend'
+# }
