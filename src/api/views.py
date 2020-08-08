@@ -10,7 +10,6 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to view or edit posts.
     """
-
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     permission_classes = [
@@ -26,10 +25,10 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-
+    lookup_field = 'username'
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
-        api_perm.IsOwnerOrReadOnly
+        api_perm.IsUserOrReadOnly
     ]
