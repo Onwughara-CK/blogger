@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 
 from . import models
 
@@ -25,9 +26,9 @@ class PostDetailView(generic.DetailView):
 
 
 class PostRedirectDetailView(RedirectView):
-    permanent = False
+    permanent = True
     query_string = True
-    pattern_name = 'page:detail'
+    pattern_name = 'page:home'
 
     def get_redirect_url(self, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['pk'])
@@ -59,6 +60,7 @@ class PostUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
 class PostDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.edit.DeleteView):
     model = models.Post
     success_message = 'Successfully deleted Post'
+    success_url = reverse_lazy('page:home')
 
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
@@ -67,12 +69,6 @@ class PostDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.edit.Delet
         if post.author != user:
             raise PermissionDenied
         return handler
-
-    def get_success_url(self):
-        return reverse('page:user-posts', args=[self.request.user.username])
-
-    import ipdb
-    ipdb.set_trace()
 
 
 class UserPostListView(generic.ListView):
