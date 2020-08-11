@@ -34,7 +34,7 @@ INSTALLED_APPS = ['users.apps.UsersConfig',
                   'page',
                   'rest_framework',
                   'crispy_forms',
-
+                  'rest_framework.authtoken',
                   'django.contrib.admin',
                   'django.contrib.auth',
                   'django.contrib.contenttypes',
@@ -141,4 +141,3 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
-

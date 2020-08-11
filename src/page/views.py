@@ -79,7 +79,7 @@ class UserPostListView(generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return User.objects.filter(username=self.kwargs['username']).first().post_set.all().order_by('-date_posted')
+        return User.objects.filter(username=self.kwargs['username']).first().posts.all().order_by('-date_posted')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

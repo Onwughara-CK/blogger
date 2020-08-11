@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 
 from . import serializers
 from . import permissions as api_perm
@@ -13,9 +15,10 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        # permissions.IsAuthenticatedOrReadOnly,
         api_perm.IsOwnerOrReadOnly
     ]
+    authentication_classes = [TokenAuthentication]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -29,6 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        # permissions.IsAuthenticatedOrReadOnly,
         api_perm.IsUserOrReadOnly
     ]
+    authentication_classes = [TokenAuthentication]

@@ -29,5 +29,4 @@ class IsUserOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Instance must have an attribute named `author`.
         return obj == request.user
