@@ -1,12 +1,12 @@
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.base import RedirectView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponseRedirect
 
 from . import models
 
@@ -35,40 +35,44 @@ class PostRedirectDetailView(RedirectView):
         return post.get_absolute_url()
 
 
-class PostCreateView(LoginRequiredMixin, generic.edit.CreateView):
+class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.edit.CreateView):
     model = models.Post
     fields = ('title', 'content', 'date_posted')
+    success_message = 'Successfully created Post'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, SuccessMessageMixin, generic.edit.UpdateView):
     model = models.Post
     fields = ('title', 'content', 'date_posted')
+    success_message = 'Successfully Updated Post'
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
-        user = request.user
+    def test_func(self):
+        user = self.request.user
         post = self.get_object()
         if post.author != user:
             raise PermissionDenied
-        return handler
+        return True
 
 
-class PostDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.edit.DeleteView):
+class PostDeleteView(UserPassesTestMixin, LoginRequiredMixin, generic.edit.DeleteView):
     model = models.Post
-    success_message = 'Successfully deleted Post'
     success_url = reverse_lazy('page:home')
+    success_message = 'Successfully Updated Post'
 
-    def dispatch(self, request, *args, **kwargs):
-        handler = super().dispatch(request, *args, **kwargs)
-        user = request.user
+    def test_func(self):
+        user = self.request.user
         post = self.get_object()
         if post.author != user:
             raise PermissionDenied
-        return handler
+        return True
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)
 
 
 class UserPostListView(generic.ListView):
