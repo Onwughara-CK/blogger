@@ -1,10 +1,11 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.generic.base import RedirectView
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.contrib.messages.views import SuccessMessageMixin
 
 from . import models
 
@@ -55,9 +56,9 @@ class PostUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
         return handler
 
 
-class PostDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+class PostDeleteView(SuccessMessageMixin, LoginRequiredMixin, generic.edit.DeleteView):
     model = models.Post
-    success_url = reverse_lazy('page:home')
+    success_message = 'Successfully deleted Post'
 
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
@@ -66,6 +67,12 @@ class PostDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
         if post.author != user:
             raise PermissionDenied
         return handler
+
+    def get_success_url(self):
+        return reverse('page:user-posts', args=[self.request.user.username])
+
+    import ipdb
+    ipdb.set_trace()
 
 
 class UserPostListView(generic.ListView):

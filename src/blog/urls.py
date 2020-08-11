@@ -34,21 +34,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('page.urls')),
     path('register/', users_view.register, name='register'),
-
     path('login/', auth_views.LoginView.as_view(template_name='page/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='page/logout.html'), name='logout'),
-
     path('profile/<str:username>', users_view.profile, name='profile'),
-
-    # API
     path('api/', include(router.urls)),
     path('api/token', views.obtain_auth_token),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-
-
-
-
-
 ]
 
 
