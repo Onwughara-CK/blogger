@@ -15,10 +15,9 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     permission_classes = [
-        # permissions.IsAuthenticatedOrReadOnly,
+        permissions.IsAuthenticated,
         api_perm.IsOwnerOrReadOnly
     ]
-    authentication_classes = [TokenAuthentication]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -32,7 +31,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = [
-        # permissions.IsAuthenticatedOrReadOnly,
+        permissions.IsAuthenticated,
         api_perm.IsUserOrReadOnly
     ]
-    authentication_classes = [TokenAuthentication]

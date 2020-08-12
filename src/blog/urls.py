@@ -25,6 +25,8 @@ from api import views as api_views
 from rest_framework import routers
 from rest_framework.authtoken import views
 
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 router = routers.DefaultRouter()
 router.register('posts', api_views.PostViewSet)
 router.register('users', api_views.UserViewSet)
@@ -38,7 +40,8 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='page/logout.html'), name='logout'),
     path('profile/<str:username>', users_view.profile, name='profile'),
     path('api/', include(router.urls)),
-    path('api/token', views.obtain_auth_token),
+    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/token/refresh/', TokenRefreshView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
