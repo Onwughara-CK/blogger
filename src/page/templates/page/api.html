@@ -1,0 +1,109 @@
+{% extends 'page/base.html' %}
+
+{% block content %}
+<h1>How to use our API</h1>
+
+<div class="content-section">
+    <p>
+        To use our API you must be a registered member of <a href="{% url 'page:home' %}">Blogger</a>,
+        Register <a href="{% url 'register' %}">here</a> if you don't have an account yet.
+    </p>
+    <P>
+        To access this sites data you will be needing a token. Send a POST request to this API
+        endpoint <code>api/v1/token/ (POST)</code> with your registered username and password like so:
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <p>Endpoint: <code>api/v1/token/ (POST)</code></p>
+                <p><b> curl -d "username=john&password=doe123" -X POST http://{{ request.get_host }}/api/v1/token/</b>
+                </p>
+            </li>
+        </ul>
+    </P>
+    <p>The action above will return an Access token and a Refresh Token. Example:
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                { <br>
+                "refresh":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.......",
+                <br>
+                "access":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9......"
+                <br>
+                }
+            </li>
+        </ul>
+    </p>
+</div>
+
+<h3>API endpoints</h3>
+<div class="content-section">
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/posts/</code> (GET)</p>
+            <p>result: A list of all blogger post</p>
+            <p>Detail Needed: None</p>
+            <p><b> Example:
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" http://{{ request.get_host }}/api/v1/posts/
+                </b>
+            </p>
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/posts/:ID/</code> (GET)</p>
+            <p>result: A specific post with the ID provided</p>
+            <p>Detail Needed: ID of post </p>
+            <p><b> Example:
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" http://{{ request.get_host }}/api/v1/posts/88/
+                </b>
+            </p>
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/posts/:ID/</code> (PUT,PATCH,DELETE)</p>
+            <p>result: Performs a specific request method on a post with the ID provided</p>
+            <p>Detail Needed: ID of post </p>
+            <p><b> Example (PUT):
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" -d "title=lorem updated
+                    from
+                    curl&content=lorem content from curl" -X PUT http://127.0.0.1:8000/api/v1/posts/88/
+                </b>
+            </p>
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/posts/</code> (POST)</p>
+            <p>result: Creates a new post</p>
+            <p>Detail Needed: title and content </p>
+            <p><b> Example (POST):
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" -d "title=lorem updated from curl&content=lorem content
+                    from curl" -X POST http://127.0.0.1:8000/api/v1/posts/
+                </b>
+            </p>
+        </li>
+        <hr>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/users/</code> (GET)</p>
+            <p>result: A list of all the Registered users</p>
+            <p><b> Example:
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" http://{{ request.get_host }}/api/v1/users/
+                </b>
+            </p>
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/users/:username/</code> (GET)</p>
+            <p>result: Details of a Registered user with the provided username</p>
+            <p><b> Example:
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" http://{{ request.get_host }}/api/v1/users/john/
+                </b>
+            </p>
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <p>Endpoint: <code>/api/v1/users/</code> (POST)</p>
+            <p>result: Creates a new user</p>
+            <p>Detail Needed: username, password and email </p>
+
+            <p><b> Example:
+                    curl -H "Authorization:Bearer ACCESS-TOKEN" -d
+                    "username=john&password=doe1234&email=john.doe@gmail.com" -X POST
+                    http://127.0.0.1:8000/api/v1/users/
+                </b>
+            </p>
+        </li>
+    </ul>
+</div>
+{% endblock content %}

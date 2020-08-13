@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic.base import RedirectView
+from django.views import generic, View
+from django.views.generic.base import RedirectView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -93,3 +93,7 @@ class UserPostListView(generic.ListView):
         context['profile_owner'] = User.objects.get(
             username=self.kwargs['username'])
         return context
+
+
+class ApiDocs(TemplateView):
+    template_name = "page/api.html"
