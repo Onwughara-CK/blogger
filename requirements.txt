@@ -10,6 +10,6 @@ urllib3==1.25.8
 Django==3.0.8
 django-crispy-forms==1.9.2
 django-guardian==2.3.0
-djangorestframework==3.11.1
+djangorestframework==3.11.2
 djangorestframework-simplejwt==4.4.0
 six==1.15.0
